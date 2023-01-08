@@ -1,6 +1,6 @@
 {
-	"dbname" : ["sample"],
-	"tbname" : ["t1"],
+	"dbname" : ["sample2"],
+	"tbname" : ["t2"],
 	"col" : [
 		{"type" : ["varchar"],"name" : ["Name"]},
 		{"type" : ["integer"],"name" : ["Age"]},
