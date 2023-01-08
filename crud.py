@@ -159,8 +159,8 @@ if __name__ == "__main__":
     conn_text = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     
     obj = CrudOperation(config_file, query_file, conn_text)
-    #obj.create_database()
-    #obj.create_table()
+    obj.create_database()
+    obj.create_table()
     obj.read_table()
     #obj.insert_into_table()
     #obj.delete_from_table()
