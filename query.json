@@ -1,0 +1,10 @@
+{
+	"insert" : [
+		["karan", "23", "student"],
+		["garv", "23", "student"]
+	],
+	"delete" : [
+		{"name" : ["karan"]},
+		{"name" : ["karan2"]}
+	]
+}
