@@ -1,10 +1,3 @@
-
-
-#pytest
-
-#git 
-#show_progress
-
 import psycopg2, json, yaml, array as arr
 
 class CrudOperation:
