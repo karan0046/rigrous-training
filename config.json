@@ -1,0 +1,9 @@
+{
+	"dbname" : ["sample"],
+	"tbname" : ["t1"],
+	"col" : [
+		{"type" : ["varchar"],"name" : ["Name"]},
+		{"type" : ["integer"],"name" : ["Age"]},
+		{"type" : ["varchar"],"name" : ["prof"]}
+	]
+}
