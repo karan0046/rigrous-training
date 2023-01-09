@@ -1,1 +1,1 @@
-# rigrous-training-day-2
+# training
