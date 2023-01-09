@@ -1,9 +1,0 @@
-{
-	"dbname" : ["sample2"],
-	"tbname" : ["t2"],
-	"col" : [
-		{"type" : ["varchar"],"name" : ["Name"]},
-		{"type" : ["integer"],"name" : ["Age"]},
-		{"type" : ["varchar"],"name" : ["prof"]}
-	]
-}
