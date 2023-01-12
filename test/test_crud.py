@@ -1,73 +1,92 @@
-import psycopg2, yaml
+import psycopg2, yaml, json
+from crud import CrudOperation
 
 def test_database_created():
     con = psycopg2.connect(conn_text)
     con.autocommit = True
     cur = con.cursor()
 
-    cur.execute("create database temporary")
+    with open(config_file, 'r') as f:
+        d = f.read()
+    obj = json.loads(d)
+    db_name = obj['dbname'][0]
+    CrudOperation().create_database(config_file, conn_text)
     cur.execute("select datname from pg_database")
     list_all_database = cur.fetchall()
-
-    if ('temporary',) in list_all_database:
+    if (db_name,) in list_all_database:
         assert 1 == 1
     else:
         assert 0 == 1
-    cur.execute("drop database if exists temporary")
+    ##cur.execute("drop database if exists " + db_name)
     con.close()
 
 def test_table_creation():
     con = psycopg2.connect(conn_text)
     con.autocommit = True
     cur = con.cursor()
-    cur.execute("drop table if exists temporary")
-    cur.execute("create table temporary (name varchar)")
+    with open(config_file, 'r') as f:
+        d = f.read()
+    obj = json.loads(d)
+    table_name = obj['tbname'][0]
+    print(table_name)
+
+    CrudOperation().create_table(config_file, conn_text)
+
     cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")
     list_all_table = cur.fetchall()
-    if ('temporary',) in list_all_table:
+    print(list_all_table)
+
+    if (table_name,) in list_all_table:
         assert 1 == 1
     else:
         assert 0 == 1
-    cur.execute("drop table if exists temporary")
+    ##cur.execute("drop table if exists " + table_name)
     con.close()
 
 def test_insertion_in_table():
     con = psycopg2.connect(conn_text)
     con.autocommit = True
     cur = con.cursor()
-    cur.execute("drop table if exists temporary")
-    cur.execute("create table temporary (name varchar)")
-    cur.execute("select * from temporary")
+
+    with open(config_file, 'r') as f:
+        d = f.read()
+    obj = json.loads(d)
+    table_name = obj['tbname'][0]
+
+    cur.execute("select * from " + table_name)
     bef = cur.fetchall()
-    cur.execute("insert into temporary values ('temp_name')")
-    cur.execute("select * from temporary")
+    CrudOperation().insert_into_table(config_file, query_file, conn_text)
+    cur.execute("select * from " + table_name)
     aft = cur.fetchall()
 
-    if len(bef) + 1 == len(aft):
+    if len(bef) < len(aft):
         assert 1 == 1
     else:
         assert 0 == 1
-    cur.execute("drop table if exists temporary")
+    #cur.execute("drop table if exists temporary")
     con.close()
 
 def test_deletion_from_table():
     con = psycopg2.connect(conn_text)
     con.autocommit = True
     cur = con.cursor()
-    cur.execute("drop table if exists temporary")
-    cur.execute("create table temporary (name varchar)")
-    cur.execute("insert into temporary values ('temp_name')")
-    cur.execute("select * from temporary")
+
+    with open(config_file, 'r') as f:
+        d = f.read()
+    obj = json.loads(d)
+    table_name = obj['tbname'][0]
+
+    cur.execute("select * from " + table_name)
     bef = cur.fetchall()
-    cur.execute("delete from temporary where name = 'temp_name'")
-    cur.execute("select * from temporary")
+    CrudOperation().delete_from_table(config_file, query_file, conn_text)
+    cur.execute("select * from " + table_name)
     aft = cur.fetchall()
 
-    if len(bef) == 1 + len(aft):
+    if len(bef) > len(aft):
         assert 1 == 1
     else:
         assert 0 == 1
-    cur.execute("drop table if exists temporary")
+    
     con.close()
 
 
