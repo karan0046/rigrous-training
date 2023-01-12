@@ -1,15 +1,11 @@
 import psycopg2, json, yaml, array as arr
 
 class CrudOperation:
-    def __init__(self, config_file, query_file, conn_text) -> None:
-        self.config_file = config_file
-        self.query_file = query_file
-        self.conn_text = conn_text
-        self.conn = psycopg2.connect(conn_text)
+    def __init__(self) -> None:
         pass
 
     #database creation
-    def create_database(self):
+    def create_database(self, config_file, conn_text):
         conn = psycopg2.connect(conn_text)
         cursor = conn.cursor()
         conn.autocommit = True
@@ -21,7 +17,7 @@ class CrudOperation:
         conn.close()
     
     #table creation
-    def create_table(self):
+    def create_table(self, config_file, conn_text):
         conn = psycopg2.connect(conn_text)
         cursor = conn.cursor()
         conn.autocommit = True
@@ -51,10 +47,11 @@ class CrudOperation:
                 query += ','
         query += ");"
         
+        cursor.execute(query)
         conn.close()
 
     #read_table
-    def read_table(self):
+    def read_table(self, config_file, conn_text):
         conn = psycopg2.connect(conn_text)
         cursor = conn.cursor()
         conn.autocommit = True
@@ -82,7 +79,7 @@ class CrudOperation:
         return str1
         
     #insertion in table
-    def insert_into_table(self):
+    def insert_into_table(self, config_file, query_file, conn_text):
         conn = psycopg2.connect(conn_text)
         cursor = conn.cursor()
         conn.autocommit = True
@@ -106,7 +103,7 @@ class CrudOperation:
         conn.close()
 
     #deletion_from_table
-    def delete_from_table(self):
+    def delete_from_table(self, config_file, query_file, conn_text):
         conn = psycopg2.connect(conn_text)
         cursor = conn.cursor()
         conn.autocommit = True
@@ -151,9 +148,9 @@ if __name__ == "__main__":
     host = dic['host']
     conn_text = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     
-    obj = CrudOperation(config_file, query_file, conn_text)
-    obj.create_database()
-    obj.create_table()
-    obj.read_table()
-    #obj.insert_into_table()
-    #obj.delete_from_table()
+    obj = CrudOperation()
+    #obj.create_database(config_file, conn_text)
+    #obj.create_table(config_file, conn_text)
+    obj.read_table(config_file, conn_text)
+    #obj.insert_into_table(config_file, query_file, conn_text)
+    #obj.delete_from_table(config_file, query_file, conn_text)
